@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SensorData index{% endblock %}
+
+{% block body %}
+    <h1>SensorData index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Timestamp</th>
+                <th>ClientName</th>
+                <th>MessageCounter</th>
+                <th>PayloadType</th>
+                <th>FrameType</th>
+                <th>Temp</th>
+                <th>Battery</th>
+                <th>SensorPosition</th>
+                <th>TimeSinceLastChange</th>
+                <th>Flapping</th>
+                <!--<th>Acceleratometer1</th>
+                <th>Acceleratometer2</th>
+                <th>LedStatus</th>
+                <th>TempLedBlink</th>
+                <th>KeepaliveInterval</th>
+                <th>LowTempThresold</th>
+                <th>HighTempThresold</th>-->
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sensor_datum in sensor_datas %}
+            <tr>
+                <td>{{ sensor_datum.id }}</td>
+                <td>{{ sensor_datum.timestamp }}</td>
+                <td>{{ sensor_datum.clientName }}</td>
+                <td>{{ sensor_datum.messageCounter }}</td>
+                <td>{{ sensor_datum.payloadType }}</td>
+                <td>{{ sensor_datum.frameType }}</td>
+                <td>{{ sensor_datum.temp }}</td>
+                <td>{{ sensor_datum.battery }}</td>
+                <td>{{ sensor_datum.sensorPosition }}</td>
+                <td>{{ sensor_datum.timeSinceLastChange }}</td>
+                <td>{{ sensor_datum.flapping }}</td>
+                <!--<td>{{ sensor_datum.acceleratometer1 }}</td>
+                <td>{{ sensor_datum.acceleratometer2 }}</td>
+                <td>{{ sensor_datum.ledStatus }}</td>
+                <td>{{ sensor_datum.tempLedBlink }}</td>
+                <td>{{ sensor_datum.keepaliveInterval }}</td>
+                <td>{{ sensor_datum.lowTempThresold }}</td>
+                <td>{{ sensor_datum.highTempThresold }}</td>-->
+                <td>
+                    <a href="{{ path('app_sensor_data_show', {'id': sensor_datum.id}) }}">show</a>
+                    <a href="{{ path('app_sensor_data_edit', {'id': sensor_datum.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="19">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sensor_data_new') }}">Create new</a>
+{% endblock %}

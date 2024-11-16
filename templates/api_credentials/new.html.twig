@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New ApiCredentials{% endblock %}
+
+{% block body %}
+    <h1>Create new ApiCredentials</h1>
+
+    {{ include('api_credentials/_form.html.twig') }}
+
+    <a href="{{ path('app_api_credentials_index') }}">back to list</a>
+{% endblock %}

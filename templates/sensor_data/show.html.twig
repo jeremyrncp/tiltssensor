@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SensorData{% endblock %}
+
+{% block body %}
+    <h1>SensorData</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ sensor_datum.id }}</td>
+            </tr>
+            <tr>
+                <th>Timestamp</th>
+                <td>{{ sensor_datum.timestamp }}</td>
+            </tr>
+            <tr>
+                <th>ClientName</th>
+                <td>{{ sensor_datum.clientName }}</td>
+            </tr>
+            <tr>
+                <th>MessageCounter</th>
+                <td>{{ sensor_datum.messageCounter }}</td>
+            </tr>
+            <tr>
+                <th>PayloadType</th>
+                <td>{{ sensor_datum.payloadType }}</td>
+            </tr>
+            <tr>
+                <th>FrameType</th>
+                <td>{{ sensor_datum.frameType }}</td>
+            </tr>
+            <tr>
+                <th>Temp</th>
+                <td>{{ sensor_datum.temp }}</td>
+            </tr>
+            <tr>
+                <th>Battery</th>
+                <td>{{ sensor_datum.battery }}</td>
+            </tr>
+            <tr>
+                <th>SensorPosition</th>
+                <td>{{ sensor_datum.sensorPosition }}</td>
+            </tr>
+            <tr>
+                <th>TimeSinceLastChange</th>
+                <td>{{ sensor_datum.timeSinceLastChange }}</td>
+            </tr>
+            <tr>
+                <th>Flapping</th>
+                <td>{{ sensor_datum.flapping }}</td>
+            </tr>
+            <tr>
+                <th>Acceleratometer1</th>
+                <td>{{ sensor_datum.acceleratometer1 }}</td>
+            </tr>
+            <tr>
+                <th>Acceleratometer2</th>
+                <td>{{ sensor_datum.acceleratometer2 }}</td>
+            </tr>
+            <tr>
+                <th>LedStatus</th>
+                <td>{{ sensor_datum.ledStatus }}</td>
+            </tr>
+            <tr>
+                <th>TempLedBlink</th>
+                <td>{{ sensor_datum.tempLedBlink }}</td>
+            </tr>
+            <tr>
+                <th>KeepaliveInterval</th>
+                <td>{{ sensor_datum.keepaliveInterval }}</td>
+            </tr>
+            <tr>
+                <th>LowTempThresold</th>
+                <td>{{ sensor_datum.lowTempThresold }}</td>
+            </tr>
+            <tr>
+                <th>HighTempThresold</th>
+                <td>{{ sensor_datum.highTempThresold }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_sensor_data_index') }}">back to list</a>
+
+    <a href="{{ path('app_sensor_data_edit', {'id': sensor_datum.id}) }}">edit</a>
+
+    {{ include('sensor_data/_delete_form.html.twig') }}
+{% endblock %}

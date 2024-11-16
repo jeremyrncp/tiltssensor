@@ -1,0 +1,24 @@
+body {
+    font-family: "Verdana", sans-serif;;
+    font-size: 16px;
+    color: black;
+}
+
+h1 {
+    display: block;
+    margin: 20px;
+    color: #264CD4 !important;
+}
+
+footer {
+    font-weight: bold;
+    color: white;
+    margin-top: 20px;
+    background-color: #264CD4;
+    text-align: center;
+    padding: 20px;
+}
+
+.pagination .page {
+    margin-right: 5px;
+}

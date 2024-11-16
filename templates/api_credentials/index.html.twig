@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}ApiCredentials index{% endblock %}
+
+{% block body %}
+    <h1>ApiCredentials index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Uuid</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for api_credential in api_credentials %}
+            <tr>
+                <td>{{ api_credential.id }}</td>
+                <td>{{ api_credential.uuid }}</td>
+                <td>
+                    <a href="{{ path('app_api_credentials_show', {'id': api_credential.id}) }}">show</a>
+                    <a href="{{ path('app_api_credentials_edit', {'id': api_credential.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_api_credentials_new') }}">Create new</a>
+{% endblock %}
