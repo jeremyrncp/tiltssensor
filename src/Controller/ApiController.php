@@ -34,6 +34,7 @@ class ApiController extends AbstractController
 
         if ($apiCredentials instanceof ApiCredentials) {
             $this->loggerService->saveLog("Api authentication success", "");
+            $this->loggerService->saveLog("Api payload content", json_encode($request->getContent()));
             $this->loggerService->saveLog("Api payload", json_encode($request->request->all()));
 
             if ($request->request->get('frame_type') === "DOOR_CHANGE") {
