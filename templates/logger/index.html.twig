@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Logger index{% endblock %}
+
+{% block body %}
+    <h1>Logger index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Content</th>
+                <th>CreatedAt</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for logger in loggers %}
+            <tr>
+                <td>{{ logger.id }}</td>
+                <td>{{ logger.name }}</td>
+                <td>{{ logger.content }}</td>
+                <td>{{ logger.createdAt ? logger.createdAt|date('Y-m-d H:i:s') : '' }}</td>
+                <td>
+                    <a href="{{ path('app_logger_show', {'id': logger.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <div class="pagination">
+        {{ knp_pagination_render(loggers) }}
+    </div>
+{% endblock %}

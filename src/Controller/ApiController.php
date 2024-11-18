@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\ApiCredentials;
 use App\Entity\Sensor;
 use App\Entity\SensorData;
+use App\Service\LoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,7 +16,7 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api')]
 class ApiController extends AbstractController
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly LoggerService $loggerService)
     {
     }
 
@@ -24,12 +25,17 @@ class ApiController extends AbstractController
     {
         $apiKey = $request->query->get('apiKey');
 
+        $this->loggerService->saveLog("Api authentication", "APIKEY : " . $apiKey);
+
         $apiCredentialsRepository = $this->entityManager->getRepository(ApiCredentials::class);
         $apiCredentials = $apiCredentialsRepository->findOneBy([
             'uuid' => $apiKey
         ]);
 
         if ($apiCredentials instanceof ApiCredentials) {
+            $this->loggerService->saveLog("Api authentication success", "");
+            $this->loggerService->saveLog("Api payload", json_encode($request->request->all()));
+
             if ($request->request->get('frame_type') === "DOOR_CHANGE") {
                 $sensorData = $this->mapPayloadDoorChange($request);
             } elseif ($request->request->get('frame_type') === "DOOR_KEEPALIVE") {
@@ -43,6 +49,10 @@ class ApiController extends AbstractController
                 'message' => "Success"
             ]);
         }
+
+        $this->loggerService->saveLog("Api authentication", "APIKEY : " . $apiKey);
+
+        $this->loggerService->saveLog("Api authentication failure", "");
 
         return $this->json([
             'message' => "Api key must be valid"

@@ -64,6 +64,17 @@
                         ] %} active {% endif %}" href="{{ path('app_sensor_data_index') }}">Sensor data</a>
                     </li>
                 {% endif %}
+                {% if is_granted("ROLE_ADMIN") %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.attributes.get('_route') in [
+                            'app_logger_index',
+                            'app_logger_new',
+                            'app_logger_show',
+                            'app_logger_edit',
+                            'app_logger_delete'
+                        ] %} active {% endif %}" href="{{ path('app_logger_index') }}">Logger</a>
+                    </li>
+                {% endif %}
             </ul>
         </header>
         <div class="container-fluid">
