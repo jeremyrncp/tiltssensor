@@ -37,10 +37,12 @@ class ApiController extends AbstractController
             $this->loggerService->saveLog("Api payload content", json_encode($request->getContent()));
             $this->loggerService->saveLog("Api payload", json_encode($request->request->all()));
 
-            if ($request->request->get('frame_type') === "DOOR_CHANGE") {
-                $sensorData = $this->mapPayloadDoorChange($request);
-            } elseif ($request->request->get('frame_type') === "DOOR_KEEPALIVE") {
-                $sensorData = $this->mapPayloadDoorKeepAlive($request);
+            $data = json_decode($request->getContent(), true);
+
+            if ($data['frame_type'] === "DOOR_CHANGE") {
+                $sensorData = $this->mapPayloadDoorChange($data);
+            } elseif ($data['frame_type'] === "DOOR_KEEPALIVE") {
+                $sensorData = $this->mapPayloadDoorKeepAlive($data);
             }
 
             $this->entityManager->persist($sensorData);
@@ -51,8 +53,6 @@ class ApiController extends AbstractController
             ]);
         }
 
-        $this->loggerService->saveLog("Api authentication", "APIKEY : " . $apiKey);
-
         $this->loggerService->saveLog("Api authentication failure", "");
 
         return $this->json([
@@ -60,11 +60,11 @@ class ApiController extends AbstractController
         ], 400);
     }
 
-    private function mapPayloadDoorChange(Request $request): SensorData
+    private function mapPayloadDoorChange(array $data): SensorData
     {
         $sensorRepository = $this->entityManager->getRepository(Sensor::class);
         $sensor = $sensorRepository->findOneBy([
-            'identifier' => $request->request->get('deviceId')
+            'identifier' => $data['deviceId']
         ]);
 
         if ($sensor === null) {
@@ -73,27 +73,27 @@ class ApiController extends AbstractController
 
         $sensorData = new SensorData();
         $sensorData->setSensor($sensor)
-                   ->setTimestamp($request->request->getInt('timestamp'))
-                   ->setClientName($request->request->get('client_name'))
-                   ->setMessageCounter($request->request->getInt('message_counter'))
-                   ->setPayloadType($request->request->get('payload_type'))
-                   ->setFrameType($request->request->get('frame_type'))
-                   ->setTemp($request->request->get('temp'))
-                   ->setBattery($request->request->get('battery'))
-                   ->setSensorPosition($request->request->get('sensor_position'))
-                   ->setTimeSinceLastChange($request->request->get('time_since_last_change'))
-                   ->setFlapping($request->request->get('flapping'))
-                   ->setAcceleratometer1($request->request->getInt('acceleratometer1'))
-                   ->setAcceleratometer2($request->request->getInt('acceleratometer2'));
+                   ->setTimestamp((int) $data['timestamp'])
+                   ->setClientName($data['client_name'])
+                   ->setMessageCounter((int) $data['message_counter'])
+                   ->setPayloadType($data['payload_type'])
+                   ->setFrameType($data['frame_type'])
+                   ->setTemp($data['temp'])
+                   ->setBattery($data['battery'])
+                   ->setSensorPosition($data['sensor_position'])
+                   ->setTimeSinceLastChange($data['time_since_last_change'])
+                   ->setFlapping($data['flapping'])
+                   ->setAcceleratometer1((int) $data['acceleratometer1'])
+                   ->setAcceleratometer2((int) $data['acceleratometer2']);
 
         return $sensorData;
     }
 
-    private function mapPayloadDoorKeepAlive(Request $request): SensorData
+    private function mapPayloadDoorKeepAlive(array $data): SensorData
     {
         $sensorRepository = $this->entityManager->getRepository(Sensor::class);
         $sensor = $sensorRepository->findOneBy([
-            'identifier' => $request->request->get('deviceId')
+            'identifier' => $data['deviceId']
         ]);
 
         if ($sensor === null) {
@@ -102,19 +102,19 @@ class ApiController extends AbstractController
 
         $sensorData = new SensorData();
         $sensorData->setSensor($sensor)
-            ->setTimestamp($request->request->getInt('timestamp'))
-            ->setClientName($request->request->get('client_name'))
-            ->setMessageCounter($request->request->getInt('message_counter'))
-            ->setPayloadType($request->request->get('payload_type'))
-            ->setFrameType($request->request->get('frame_type'))
-            ->setTemp($request->request->get('temp'))
-            ->setBattery($request->request->get('battery'))
-            ->setSensorPosition($request->request->get('sensor_position'))
-            ->setLedStatus($request->request->getInt('led_status'))
-            ->setTempLedBlink($request->request->getInt('temp_led_blink'))
-            ->setKeepaliveInterval($request->request->getInt('keepalive_interval'))
-            ->setLowTempThresold($request->request->getInt('low_temp_thresold'))
-            ->setHighTempThresold($request->request->getInt('high_temp_thresold'));
+            ->setTimestamp((int) $data['timestamp'])
+            ->setClientName($data['client_name'])
+            ->setMessageCounter((int) $data['message_counter'])
+            ->setPayloadType($data['payload_type'])
+            ->setFrameType($data['frame_type'])
+            ->setTemp($data['temp'])
+            ->setBattery($data['battery'])
+            ->setSensorPosition($data['sensor_position'])
+            ->setLedStatus((int) $data['led_status'])
+            ->setTempLedBlink((int) $data['temp_led_blink'])
+            ->setKeepaliveInterval((int) $data['keepalive_interval'])
+            ->setLowTempThresold((int) $data['low_temp_thresold'])
+            ->setHighTempThresold((int) $data['high_temp_thresold']);
 
         return $sensorData;
     }
