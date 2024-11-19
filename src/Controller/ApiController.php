@@ -92,8 +92,8 @@ class ApiController extends AbstractController
                    ->setSensorPosition($data['sensor_position'])
                    ->setTimeSinceLastChange($data['time_since_last_change'])
                    ->setFlapping($data['flapping'])
-                   ->setAcceleratometer1((int) $data['acceleratometer1'])
-                   ->setAcceleratometer2((int) $data['acceleratometer2']);
+                   ->setAcceleratometer1((int) $data['accelerometer1'])
+                   ->setAcceleratometer2((int) $data['accelerometer2']);
 
         return $sensorData;
     }
