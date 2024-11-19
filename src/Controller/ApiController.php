@@ -35,20 +35,26 @@ class ApiController extends AbstractController
         if ($apiCredentials instanceof ApiCredentials) {
             $this->loggerService->saveLog("Api authentication success", "");
             $this->loggerService->saveLog("Api payload content", json_encode($request->getContent()));
-            $this->loggerService->saveLog("Api payload", json_encode($request->request->all()));
 
             $data = json_decode($request->getContent(), true);
 
-            if ($data['frame_type'] === "DOOR_CHANGE") {
-                $sensorData = $this->mapPayloadDoorChange($data);
+            try {
+                if ($data['frame_type'] === "DOOR_CHANGE") {
+                    $sensorData = $this->mapPayloadDoorChange($data);
 
-                $this->entityManager->persist($sensorData);
-                $this->entityManager->flush();
-            } elseif ($data['frame_type'] === "DOOR_KEEPALIVE") {
-                $sensorData = $this->mapPayloadDoorKeepAlive($data);
+                    $this->entityManager->persist($sensorData);
+                    $this->entityManager->flush();
+                } elseif ($data['frame_type'] === "DOOR_KEEPALIVE") {
+                    $sensorData = $this->mapPayloadDoorKeepAlive($data);
 
-                $this->entityManager->persist($sensorData);
-                $this->entityManager->flush();
+                    $this->entityManager->persist($sensorData);
+                    $this->entityManager->flush();
+                }
+
+                $this->loggerService->saveLog("Api code successfull", "");
+
+            } catch (\Exception $exception) {
+                $this->loggerService->saveLog("Api code error", $exception->getMessage());
             }
 
             return $this->json([
