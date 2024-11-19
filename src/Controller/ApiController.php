@@ -122,8 +122,8 @@ class ApiController extends AbstractController
             ->setLedStatus((int) $data['led_status'])
             ->setTempLedBlink((int) $data['temp_led_blink'])
             ->setKeepaliveInterval((int) $data['keepalive_interval'])
-            ->setLowTempThresold((int) $data['low_temp_thresold'])
-            ->setHighTempThresold((int) $data['high_temp_thresold']);
+            ->setLowTempThresold((int) $data['low_temp_threshold'])
+            ->setHighTempThresold((int) $data['high_temp_threshold']);
 
         return $sensorData;
     }
