@@ -41,12 +41,15 @@ class ApiController extends AbstractController
 
             if ($data['frame_type'] === "DOOR_CHANGE") {
                 $sensorData = $this->mapPayloadDoorChange($data);
+
+                $this->entityManager->persist($sensorData);
+                $this->entityManager->flush();
             } elseif ($data['frame_type'] === "DOOR_KEEPALIVE") {
                 $sensorData = $this->mapPayloadDoorKeepAlive($data);
-            }
 
-            $this->entityManager->persist($sensorData);
-            $this->entityManager->flush();
+                $this->entityManager->persist($sensorData);
+                $this->entityManager->flush();
+            }
 
             return $this->json([
                 'message' => "Success"
