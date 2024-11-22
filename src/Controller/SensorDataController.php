@@ -21,7 +21,7 @@ final class SensorDataController extends AbstractController
     public function index(SensorDataRepository $sensorDataRepository, Request $request,  PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $sensorDataRepository->findAll(),
+            $sensorDataRepository->findBy([], ['id' => 'DESC']),
             $request->query->getInt('page', 1),
             50
         );
