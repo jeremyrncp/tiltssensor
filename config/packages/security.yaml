@@ -14,7 +14,7 @@ security:
             memory:
                 users:
                     admin@cbtel.com: { password: '$2y$13$1ksgQzHo0kYARcOLEeQK7OmIqPRICaMzVG4031OOcmpzSaP.EUXYK', roles: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
-                    eric@0gbaltics.com: { password: '$2y$13$E0jVFvCsRkiLNmBc9vKLPeJfwsretgWKB0joteDyqzRNBoslX90De', roles: [ 'ROLE_ADMIN', 'ROLE_USER' ] }
+                    ericsuperadmin@0gbaltics.com: { password: '$2y$13$E0jVFvCsRkiLNmBc9vKLPeJfwsretgWKB0joteDyqzRNBoslX90De', roles: [ 'ROLE_SUPER_ADMIN', 'ROLE_ADMIN', 'ROLE_USER' ] }
 
         all_users:
             chain:

@@ -8,22 +8,26 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Lift</th>
                 <th>Identifier</th>
                 <th>Name</th>
                 <th>Description</th>
                 <th>Latitude</th>
                 <th>Longitude</th>
+                <th>Floor</th>
                 <th>actions</th>
             </tr>
         </thead>
         <tbody>
         {% for sensor in sensors %}
             <tr>
+                <td>{{ sensor.lift }}</td>
                 <td>{{ sensor.identifier }}</td>
                 <td>{{ sensor.name }}</td>
                 <td>{{ sensor.description }}</td>
                 <td>{{ sensor.latitude }}</td>
                 <td>{{ sensor.longitude }}</td>
+                <td>{{ sensor.floor }}</td>
                 <td>
                     <a href="{{ path('app_sensor_show', {'id': sensor.id}) }}">show</a>
                     <a href="{{ path('app_sensor_edit', {'id': sensor.id}) }}">edit</a>
@@ -36,6 +40,9 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        {{ knp_pagination_render(sensors) }}
+    </div>
 
     <a href="{{ path('app_sensor_new') }}">Create new</a>
 {% endblock %}

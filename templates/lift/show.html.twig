@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lift{% endblock %}
+
+{% block body %}
+    <h1>Lift</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Organization</th>
+                <td>{{ lift.organization.name }}</td>
+            </tr>
+            <tr>
+                <th>Inventory</th>
+                <td>{{ lift.inventory }}</td>
+            </tr>
+            <tr>
+                <th>Address</th>
+                <td>{{ lift.address }}</td>
+            </tr>
+            <tr>
+                <th>Quartier</th>
+                <td>{{ lift.quartier }}</td>
+            </tr>
+            <tr>
+                <th>NameContact</th>
+                <td>{{ lift.nameContact }}</td>
+            </tr>
+            <tr>
+                <th>PhoneContact</th>
+                <td>{{ lift.phoneContact }}</td>
+            </tr>
+            <tr>
+                <th>Latitude</th>
+                <td>{{ lift.latitude }}</td>
+            </tr>
+            <tr>
+                <th>Longitude</th>
+                <td>{{ lift.longitude }}</td>
+            </tr>
+            <tr>
+                <th>Floor</th>
+                <td>{{ lift.floor }}</td>
+            </tr>
+            <tr>
+                <th>Note</th>
+                <td>{{ lift.note }}</td>
+            </tr>
+            <tr>
+                <th>Maintenance</th>
+                <td>{{ lift.maintenance ? 'Yes' : 'No' }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_lift_index') }}">back to list</a>
+
+    <a href="{{ path('app_lift_edit', {'id': lift.id}) }}">edit</a>
+
+    {{ include('lift/_delete_form.html.twig') }}
+{% endblock %}

@@ -27,9 +27,6 @@ class Sensor
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $longitude = null;
 
-    #[ORM\ManyToOne(inversedBy: 'sensors')]
-    private ?User $owner = null;
-
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $identifier = null;
 
@@ -38,6 +35,12 @@ class Sensor
      */
     #[ORM\OneToMany(targetEntity: SensorData::class, mappedBy: 'sensor')]
     private Collection $sensorData;
+
+    #[ORM\ManyToOne(inversedBy: 'sensors')]
+    private ?Lift $lift = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $floor = null;
 
     public function __construct()
     {
@@ -97,18 +100,6 @@ class Sensor
         return $this;
     }
 
-    public function getOwner(): ?User
-    {
-        return $this->owner;
-    }
-
-    public function setOwner(?User $owner): static
-    {
-        $this->owner = $owner;
-
-        return $this;
-    }
-
     public function getIdentifier(): ?string
     {
         return $this->identifier;
@@ -154,5 +145,29 @@ class Sensor
     public function __toString(): string
     {
         return $this->identifier;
+    }
+
+    public function getLift(): ?Lift
+    {
+        return $this->lift;
+    }
+
+    public function setLift(?Lift $lift): static
+    {
+        $this->lift = $lift;
+
+        return $this;
+    }
+
+    public function getFloor(): ?int
+    {
+        return $this->floor;
+    }
+
+    public function setFloor(?int $floor): static
+    {
+        $this->floor = $floor;
+
+        return $this;
     }
 }

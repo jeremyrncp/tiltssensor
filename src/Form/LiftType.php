@@ -3,27 +3,36 @@
 namespace App\Form;
 
 use App\Entity\Lift;
-use App\Entity\Sensor;
+use App\Entity\Organization;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class SensorType extends AbstractType
+class LiftType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('identifier')
             ->add('name')
-            ->add('description')
+            ->add('organization', EntityType::class, [
+                'class' => Organization::class,
+                'choice_label' => 'name',
+            ])
+            ->add('inventory')
+            ->add('address')
+            ->add('quartier')
+            ->add('nameContact')
+            ->add('phoneContact')
             ->add('latitude')
             ->add('longitude')
             ->add('floor')
-            ->add('lift', EntityType::class, [
-                'class' => Lift::class,
-                'choice_label' => 'name',
+            ->add('note')
+            ->add('maintenance')
+            ->add('maintener', EntityType::class, [
+                'class' => User::class,
+                'choice_label' => 'email',
             ])
         ;
     }
@@ -31,7 +40,7 @@ class SensorType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Sensor::class,
+            'data_class' => Lift::class,
         ]);
     }
 }

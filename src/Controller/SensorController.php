@@ -3,9 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Sensor;
+use App\Entity\User;
 use App\Form\SensorType;
 use App\Repository\SensorRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,10 +19,25 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 final class SensorController extends AbstractController
 {
     #[Route(name: 'app_sensor_index', methods: ['GET'])]
-    public function index(SensorRepository $sensorRepository): Response
+    public function index(SensorRepository $sensorRepository, Request $request, PaginatorInterface $paginator): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($this->isGranted("ROLE_SUPER_ADMIN")) {
+            $sensors = $sensorRepository->findAll();
+        } elseif ($this->isGranted("ROLE_ADMIN")) {
+            $sensors = $sensorRepository->findByOrganization($user->getOrganization());
+        }
+
+        $pagination = $paginator->paginate(
+            $sensors,
+            $request->query->getInt('page', 1),
+            30
+        );
+
         return $this->render('sensor/index.html.twig', [
-            'sensors' => $sensorRepository->findAll(),
+            'sensors' => $pagination,
         ]);
     }
 

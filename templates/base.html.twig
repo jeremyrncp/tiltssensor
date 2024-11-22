@@ -20,6 +20,17 @@
                 <img src="/images/logo.png" alt="logo" />
             </div>
             <ul class="nav nav-tabs">
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.attributes.get('_route') in [
+                            'app_organization_index',
+                            'app_organization_new',
+                            'app_organization_show',
+                            'app_organization_edit',
+                            'app_organization_delete'
+                        ] %} active {% endif %}" href="{{ path('app_organization_index') }}">Organization</a>
+                    </li>
+                {% endif %}
                 {% if is_granted("ROLE_ADMIN") %}
                 <li class="nav-item">
                     <a class="nav-link {% if app.request.attributes.get('_route') in [
@@ -31,18 +42,18 @@
                     ] %} active {% endif %}" href="{{ path('app_user_index') }}">Users</a>
                 </li>
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
-                            'app_api_credentials_index',
-                            'app_api_credentials_new',
-                            'app_api_credentials_show',
-                            'app_api_credentials_edit',
-                            'app_api_credentials_delete'
-                        ] %} active {% endif %}" href="{{ path('app_api_credentials_index') }}">Api Credentials</a>
+                            'app_lift_index',
+                            'app_lift_new',
+                            'app_lift_show',
+                            'app_lift_edit',
+                            'app_lift_delete'
+                        ] %} active {% endif %}" href="{{ path('app_lift_index') }}">Lifts</a>
                     </li>
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
                             'app_sensor_index',
@@ -53,7 +64,7 @@
                         ] %} active {% endif %}" href="{{ path('app_sensor_index') }}">Sensors</a>
                     </li>
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
                             'app_sensor_data_index',
@@ -64,7 +75,7 @@
                         ] %} active {% endif %}" href="{{ path('app_sensor_data_index') }}">Sensor data</a>
                     </li>
                 {% endif %}
-                {% if is_granted("ROLE_ADMIN") %}
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
                             'app_logger_index',
@@ -73,6 +84,17 @@
                             'app_logger_edit',
                             'app_logger_delete'
                         ] %} active {% endif %}" href="{{ path('app_logger_index') }}">Logger</a>
+                    </li>
+                {% endif %}
+                {% if is_granted("ROLE_SUPER_ADMIN") %}
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.attributes.get('_route') in [
+                            'app_api_credentials_index',
+                            'app_api_credentials_new',
+                            'app_api_credentials_show',
+                            'app_api_credentials_edit',
+                            'app_api_credentials_delete'
+                        ] %} active {% endif %}" href="{{ path('app_api_credentials_index') }}">Api credentials</a>
                     </li>
                 {% endif %}
             </ul>

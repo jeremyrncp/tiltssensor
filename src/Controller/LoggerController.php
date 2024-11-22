@@ -19,7 +19,7 @@ final class LoggerController extends AbstractController
     public function index(LoggerRepository $loggerRepository, Request $request, PaginatorInterface $paginator): Response
     {
         $pagination = $paginator->paginate(
-            $loggerRepository->findAll(),
+            $loggerRepository->findBy([], ['id' => 'DESC']),
             $request->query->getInt('page', 1),
             30
         );

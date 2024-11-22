@@ -12,6 +12,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Organization</th>
                 <th>Firstname</th>
                 <th>Name</th>
                 <th>Fonction</th>
@@ -24,6 +25,7 @@
         <tbody>
         {% for user in users %}
             <tr>
+                <td>{{ user.organization }}</td>
                 <td>{{ user.firstname }}</td>
                 <td>{{ user.lastname }}</td>
                 <td>{{ user.fonction }}</td>
@@ -42,4 +44,7 @@
         {% endfor %}
         </tbody>
     </table>
+    <div class="pagination">
+        {{ knp_pagination_render(users) }}
+    </div>
 {% endblock %}

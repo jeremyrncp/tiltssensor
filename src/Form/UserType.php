@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Organization;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\CallbackTransformer;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,6 +18,10 @@ class UserType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
+            ->add('organization', EntityType::class, [
+                'class' => Organization::class,
+                'choice_label' => 'name',
+            ])
             ->add('firstname', TextType::class)
             ->add('lastname', TextType::class)
             ->add('fonction', TextType::class)
@@ -23,6 +29,7 @@ class UserType extends AbstractType
             ->add('roles', ChoiceType::class, [
                 'choices'  => [
                     'User' => 'ROLE_USER',
+                    'Supervisor' => 'ROLE_SUPERVISOR',
                     'Admin' => 'ROLE_ADMIN'
                 ]
             ])

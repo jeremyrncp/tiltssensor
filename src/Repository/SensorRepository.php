@@ -2,6 +2,7 @@
 
 namespace App\Repository;
 
+use App\Entity\Organization;
 use App\Entity\Sensor;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
@@ -14,6 +15,16 @@ class SensorRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Sensor::class);
+    }
+
+    public function findByOrganization(Organization $organization)
+    {
+        return $this->createQueryBuilder("s")
+                    ->innerJoin("s.lift", "l")
+                    ->andWhere("l.organization = :organization")
+                    ->setParameter("organization", $organization)
+                    ->getQuery()
+                    ->getResult();
     }
 
     //    /**

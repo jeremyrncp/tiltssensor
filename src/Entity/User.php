@@ -48,9 +48,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(targetEntity: Sensor::class, mappedBy: 'owner')]
     private Collection $sensors;
 
+    /**
+     * @var Collection<int, Lift>
+     */
+    #[ORM\OneToMany(targetEntity: Lift::class, mappedBy: 'maintener')]
+    private Collection $lifts;
+
+    #[ORM\ManyToOne(inversedBy: 'users')]
+    private ?Organization $organization = null;
+
     public function __construct()
     {
         $this->sensors = new ArrayCollection();
+        $this->lifts = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -190,6 +200,48 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                 $sensor->setOwner(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Lift>
+     */
+    public function getLifts(): Collection
+    {
+        return $this->lifts;
+    }
+
+    public function addLift(Lift $lift): static
+    {
+        if (!$this->lifts->contains($lift)) {
+            $this->lifts->add($lift);
+            $lift->setMaintener($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLift(Lift $lift): static
+    {
+        if ($this->lifts->removeElement($lift)) {
+            // set the owning side to null (unless already changed)
+            if ($lift->getMaintener() === $this) {
+                $lift->setMaintener(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getOrganization(): ?Organization
+    {
+        return $this->organization;
+    }
+
+    public function setOrganization(?Organization $organization): static
+    {
+        $this->organization = $organization;
 
         return $this;
     }
