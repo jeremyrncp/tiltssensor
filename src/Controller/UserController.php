@@ -21,8 +21,17 @@ final class UserController extends AbstractController
     #[Route(name: 'app_user_index', methods: ['GET'])]
     public function index(UserRepository $userRepository, Request $request,  PaginatorInterface $paginator): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        if ($this->isGranted("ROLE_SUPER_ADMIN")) {
+            $users = $userRepository->findBy([], ['id' => 'DESC']);
+        } elseif ($this->isGranted("ROLE_ADMIN")) {
+            $users = $userRepository->findBy(["organization" => $user->getOrganization()], ['id' => 'DESC']);
+        }
+
         $pagination = $paginator->paginate(
-            $userRepository->findBy([], ['id' => 'DESC']),
+            $users,
             $request->query->getInt('page', 1),
             50
         );
