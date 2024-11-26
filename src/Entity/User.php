@@ -43,12 +43,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $fonction = null;
 
     /**
-     * @var Collection<int, Sensor>
-     */
-    #[ORM\OneToMany(targetEntity: Sensor::class, mappedBy: 'owner')]
-    private Collection $sensors;
-
-    /**
      * @var Collection<int, Lift>
      */
     #[ORM\OneToMany(targetEntity: Lift::class, mappedBy: 'maintener')]
@@ -59,7 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct()
     {
-        $this->sensors = new ArrayCollection();
         $this->lifts = new ArrayCollection();
     }
 
@@ -170,36 +163,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFonction(?string $fonction): static
     {
         $this->fonction = $fonction;
-
-        return $this;
-    }
-
-    /**
-     * @return Collection<int, Sensor>
-     */
-    public function getSensors(): Collection
-    {
-        return $this->sensors;
-    }
-
-    public function addSensor(Sensor $sensor): static
-    {
-        if (!$this->sensors->contains($sensor)) {
-            $this->sensors->add($sensor);
-            $sensor->setOwner($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSensor(Sensor $sensor): static
-    {
-        if ($this->sensors->removeElement($sensor)) {
-            // set the owning side to null (unless already changed)
-            if ($sensor->getOwner() === $this) {
-                $sensor->setOwner(null);
-            }
-        }
 
         return $this;
     }
