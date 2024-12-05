@@ -61,9 +61,16 @@ class Lift
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
+    /**
+     * @var Collection<int, Note>
+     */
+    #[ORM\OneToMany(targetEntity: Note::class, mappedBy: 'lift', orphanRemoval: true, cascade: ['persist', 'remove'])]
+    private Collection $notes;
+
     public function __construct()
     {
         $this->sensors = new ArrayCollection();
+        $this->notes = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -260,5 +267,35 @@ class Lift
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, Note>
+     */
+    public function getNotes(): Collection
+    {
+        return $this->notes;
+    }
+
+    public function addNote(Note $note): static
+    {
+        if (!$this->notes->contains($note)) {
+            $this->notes->add($note);
+            $note->setLift($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNote(Note $note): static
+    {
+        if ($this->notes->removeElement($note)) {
+            // set the owning side to null (unless already changed)
+            if ($note->getLift() === $this) {
+                $note->setLift(null);
+            }
+        }
+
+        return $this;
     }
 }

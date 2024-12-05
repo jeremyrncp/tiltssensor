@@ -8,6 +8,7 @@
     <table class="table">
         <thead>
             <tr>
+                <th>Organization</th>
                 <th>Name</th>
                 <th>Inventory</th>
                 <th>Address</th>
@@ -25,6 +26,7 @@
         <tbody>
         {% for lift in lifts %}
             <tr>
+                <td>{{ lift.organization.name }}</td>
                 <td>{{ lift.name }}</td>
                 <td>{{ lift.inventory }}</td>
                 <td>{{ lift.address }}</td>

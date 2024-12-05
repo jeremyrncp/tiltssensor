@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Lift {{ lift.inventory }} {% endblock %}
+
+{% block body %}
+<br />
+<h1>{{ lift.inventory }}</h1>
+<div class="row mt-4">
+    <div class="col-4">
+        <div class="alert alert-warning">
+            <b>Inventory</b> : {{ lift.inventory }}<br />
+            <b>Address</b> : {{ lift.address }} <b>Quartier</b> : {{ lift.quartier }}<br />
+            <b>Number floor</b> : {{ lift.floor }}<br />
+            <b>Status</b> : {{ liftData.status }}<br />
+            <b>Movements</b> : {{ liftData.movements }}<br />
+            <b>Note</b> : {{ lift.note }}<br />
+            <b>Name contact</b> : {{ lift.nameContact }} <b>Phone contact</b> : {{ lift.phoneContact }}<br />
+            <b>Maintener</b> : {{ lift.maintener }}<br />
+            <b>Maintenance</b> : {{ liftData.isMaintenance == true ? 'yes' : 'no' }}<br />
+        </div>
+        <div class="alert alert-info">
+            <h3>Discussions</h3><br />
+            {% for note in lift.notes %}
+                <p class="mb-2">
+                    <b>{{ note.owner }}</b> - {{ note.createdAt|date('Y-m-d H:i:s') }}<br />
+                    {{ note.content|raw }}
+                </p>
+            {% endfor %}
+            <br />
+            <h3>Add note</h3>
+            {{ form(noteForm) }}
+
+        </div>
+    </div>
+    <div class="col-4">
+        {{ form(rangeDateForm) }}
+
+        <div id="chartMovements"></div>
+    </div>
+    <div class="col-4">
+        <div id="map" style="height:700px"></div>
+    </div>
+</div>
+<br />
+    <a href="{{ path("app_dashboard_lift") }}"><< back to index</a>
+<br />
+<script type="text/javascript">
+    const { AgCharts } = agCharts;
+
+    // Movement
+    const movements = {
+      container: document.getElementById("chartMovements"),
+      title: {
+        text: "Movements",
+      },
+      data: [
+          {% for data in liftData.sensorDatas %}
+          {% if data.sensorPosition == 'opened' %}
+        { date: "{{ data.timestamp|date('Y-m-d H:i:s') }}", movement:  1 },
+          {% else %}
+        { date: "{{ data.timestamp|date('Y-m-d H:i:s') }}", movement:  0 },
+          {% endif %}
+          {% endfor %}
+      ],
+
+      // Series: Defines which chart type and data to use
+      series: [{ type: "area", xKey: "date", yKey: "movement" }],
+    };
+
+    AgCharts.create(movements);
+
+
+
+
+    map = L.map('map').setView([{{ lift.latitude }}, {{ lift.longitude }}], 12);
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 19,
+      attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+    L.marker([{{ lift.latitude }}, {{ lift.longitude }}]).addTo(map);
+</script>
+{% endblock %}

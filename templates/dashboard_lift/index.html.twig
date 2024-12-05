@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard lift{% endblock %}
+
+{% block body %}
+    {{ form(form) }}
+    <br />
+    <table class="table table-bordered table-responsive table-hover">
+        <thead>
+        <tr class="text-center">
+            <th>&nbsp;</th>
+            <th>Inventory</th>
+            <th>Address</th>
+            <th>Quartier</th>
+            <th>Status</th>
+            <th>Movements</th>
+            <th>Floor</th>
+            <th>Localisation</th>
+            <th>Maintenance</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lift in lifts %}
+            <tr class="text-center">
+                <th><input type="checkbox" name="export" /></th>
+                <td>{{ lift.inventory }}</td>
+                <td>{{ lift.address }}</td>
+                <td>{{ lift.quartier }}</td>
+                <td>{{ lift.status }}</td>
+                <td>{{ lift.movements }}</td>
+                <td>{{ lift.floor }}</td>
+                <td><i style="cursor:pointer;" class="fa-solid fa-map" onclick="showMap({{ lift.latitude }}, {{ lift.longitude }})"></i></td>
+                <td><input type="checkbox" {{ lift.isMaintenance ? 'checked' : '' }} /></td>
+                <td>
+                    <a href="{{ path('app_dashboard_unitary_lift', {'id': lift.id}) }}">show</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <div class="modal" id="modal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Map</h5>
+                    <button type="button" class="close" onclick="closeModal()" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body" id="liftmap">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript">
+        var map = null;
+
+        const showMap = (latitude, longitude) => {
+          document.getElementById('liftmap').innerHTML = "<div id='map' style='width: 100%; height: 300px;'></div>";
+
+          map = L.map('map').setView([latitude, longitude], 12);
+          L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+          }).addTo(map);
+          L.marker([latitude, longitude]).addTo(map);
+
+          $('#modal').modal('show');
+        };
+
+        $('#modal').on('show.bs.modal', function(){
+          setTimeout(function() {
+            map.invalidateSize();
+          }, 10);
+        });
+
+        const closeModal = () => {
+          $('#modal').modal('hide');
+        }
+
+    </script>
+{% endblock %}
