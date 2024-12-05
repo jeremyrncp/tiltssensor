@@ -13,6 +13,7 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 
 class DashboardLiftController extends AbstractController
 {
@@ -39,9 +40,13 @@ class DashboardLiftController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        $lifts = $this->liftRepository->findBy([
-            'organization' => $user->getOrganization()
-        ]);
+        if ($this->getUser() instanceof InMemoryUser) {
+            $lifts = $this->liftRepository->findAll();
+        } else {
+            $lifts = $this->liftRepository->findBy([
+                'organization' => $user->getOrganization()
+            ]);
+        }
 
         $liftDatas = $this->liftService->getLiftData($lifts, $rangeDateVO->start, $rangeDateVO->end);
 
