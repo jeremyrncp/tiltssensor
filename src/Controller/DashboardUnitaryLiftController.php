@@ -15,6 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\User\InMemoryUser;
 
 class DashboardUnitaryLiftController extends AbstractController
 {
@@ -24,7 +25,8 @@ class DashboardUnitaryLiftController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-        if ($lift->getOrganization() !== $user->getOrganization() AND !$this->isGranted("ROLE_SUPER_ADMIN")) {
+
+        if ($user instanceof InMemoryUser OR ($lift->getOrganization() !== $user->getOrganization() AND !$this->isGranted("ROLE_SUPER_ADMIN"))) {
             throw new AccessDeniedHttpException();
         }
 
