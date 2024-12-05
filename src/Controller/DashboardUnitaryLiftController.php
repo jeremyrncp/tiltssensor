@@ -25,8 +25,8 @@ class DashboardUnitaryLiftController extends AbstractController
         /** @var User $user */
         $user = $this->getUser();
 
-
-        if ($user instanceof InMemoryUser OR ($lift->getOrganization() !== $user->getOrganization() AND !$this->isGranted("ROLE_SUPER_ADMIN"))) {
+        if ($user instanceof InMemoryUser) {
+        }else if ($lift->getOrganization() !== $user->getOrganization() AND !$this->isGranted("ROLE_SUPER_ADMIN")) {
             throw new AccessDeniedHttpException();
         }
 
