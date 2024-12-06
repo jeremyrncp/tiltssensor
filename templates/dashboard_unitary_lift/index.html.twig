@@ -20,12 +20,14 @@
         </div>
         <div class="alert alert-info">
             <h3>Discussions</h3><br />
-            {% for note in lift.notes %}
-                <p class="mb-2">
-                    <b>{{ note.owner }}</b> - {{ note.createdAt|date('Y-m-d H:i:s') }}<br />
-                    {{ note.content|raw }}
-                </p>
-            {% endfor %}
+            <div style="height:300px; overflow-y: scroll;">
+                {% for note in lift.notes %}
+                    <p class="mb-2">
+                        <b>{{ note.owner }}</b> - {{ note.createdAt|date('Y-m-d H:i:s') }}<br />
+                        {{ note.content|raw }}
+                    </p>
+                {% endfor %}
+            </div>
             <br />
             <h3>Add note</h3>
             {{ form(noteForm) }}
@@ -54,12 +56,8 @@
         text: "Movements",
       },
       data: [
-          {% for data in liftData.sensorDatas %}
-          {% if data.sensorPosition == 'opened' %}
-        { date: "{{ data.timestamp|date('Y-m-d H:i:s') }}", movement:  1 },
-          {% else %}
-        { date: "{{ data.timestamp|date('Y-m-d H:i:s') }}", movement:  0 },
-          {% endif %}
+          {% for date, mouvement in liftData.mouvementsData %}
+        { date: "{{ date }}", movement: {{ mouvement }} },
           {% endfor %}
       ],
 

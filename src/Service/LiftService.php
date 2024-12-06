@@ -62,7 +62,8 @@ class LiftService
                 "floor" => $sensor->getFloor(),
                 "movements" => $extractedWithOneSensor->mouvements,
                 "state" => $extractedWithOneSensor->state,
-                "sensorDatas" => $extractedWithOneSensor->sensorDatas
+                "sensorDatas" => $extractedWithOneSensor->sensorDatas,
+                "mouvementsData" => $extractedWithOneSensor->mouvementsData
             ];
         }
 
@@ -77,8 +78,13 @@ class LiftService
             $dateSensor = (new \DateTime())->setTimestamp($sensorData->getTimestamp());
 
             if ($dateSensor >= $start && $dateSensor <= $end) {
+                if (!array_key_exists($dateSensor->format("Y-m-d"), $extractedOneSensorVO->mouvementsData)) {
+                    $extractedOneSensorVO->mouvementsData[$dateSensor->format("Y-m-d")] = 0;
+                }
+
                 if ($sensorData->getSensorPosition() === 'opened') {
                     $extractedOneSensorVO->mouvements += 1;
+                    $extractedOneSensorVO->mouvementsData[$dateSensor->format("Y-m-d")] += 1;
                 }
                 $extractedOneSensorVO->sensorDatas[] = $sensorData;
             }
@@ -105,7 +111,8 @@ class LiftService
             "movements" => $extractedOneSensorVO->mouvements,
             "floor" => $sensor->getFloor(),
             "sensorDatas" => $extractedOneSensorVO->sensorDatas,
-            "isMaintenance" => $lift->isMaintenance()
+            "isMaintenance" => $lift->isMaintenance(),
+            "mouvementsData" => $extractedOneSensorVO->mouvementsData
         ];
     }
 }
