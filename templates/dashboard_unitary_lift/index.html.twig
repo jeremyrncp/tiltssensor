@@ -38,7 +38,13 @@
     <div class="col-4">
         {{ form(rangeDateForm) }}
 
+        {% if liftData.multipleSensor is not defined %}
         <div id="chartMovements"></div>
+        {% else %}
+            {% for index,data in liftData.multipleSensor.floorDatas %}
+                <div id="chartMovements{{ index }}"></div>
+            {% endfor %}
+        {% endif %}
     </div>
     <div class="col-4">
         <div id="map" style="height:700px"></div>
@@ -50,7 +56,8 @@
 <script type="text/javascript">
     const { AgCharts } = agCharts;
 
-    // Movement
+    {% if liftData.multipleSensor is not defined %}
+   // Movement
     const movements = {
       container: document.getElementById("chartMovements"),
       title: {
@@ -67,7 +74,27 @@
     };
 
     AgCharts.create(movements);
+    {% else %}
+        {% for index,data in liftData.multipleSensor.floorDatas %}
+            // Movement
+            const movements{{ index }} = {
+              container: document.getElementById("chartMovements{{ index }}"),
+              title: {
+                text: "Movements (floor {{ index }})",
+              },
+              data: [
+                  {% for date, mouvement in data.mouvementsData %}
+                { date: "{{ date }}", movement: {{ mouvement }} },
+                  {% endfor %}
+              ],
 
+              // Series: Defines which chart type and data to use
+              series: [{ type: "area", xKey: "date", yKey: "movement" }],
+            };
+
+            AgCharts.create(movements{{ index }} );
+        {% endfor %}
+    {% endif %}
 
 
 
