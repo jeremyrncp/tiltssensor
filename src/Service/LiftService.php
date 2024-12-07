@@ -57,7 +57,8 @@ class LiftService
                     "movements" => 0,
                     "floor" => 0,
                     "sensorDatas" => null,
-                    "isMaintenance" => $lift->isMaintenance()
+                    "isMaintenance" => $lift->isMaintenance(),
+                    "mouvementsData" => null
                 ];
             }
         }
