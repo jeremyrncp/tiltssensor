@@ -6,7 +6,7 @@
 <br />
 <h1>{{ lift.inventory }}</h1>
 <div class="row mt-4">
-    <div class="col-4">
+    <div class="col-3">
         <div class="alert alert-warning">
             <b>Inventory</b> : {{ lift.inventory }}<br />
             <b>Address</b> : {{ lift.address }} <b>Quartier</b> : {{ lift.quartier }}<br />
@@ -35,9 +35,7 @@
             {% endif %}
         </div>
     </div>
-    <div class="col-4">
-        {{ form(rangeDateForm) }}
-
+    <div class="col-6">
         {% if liftData.multipleSensor is not defined %}
         <div id="chartMovements"></div>
         {% else %}
@@ -46,8 +44,9 @@
             {% endfor %}
         {% endif %}
     </div>
-    <div class="col-4">
-        <div id="map" style="height:700px"></div>
+    <div class="col-3">
+        {{ form(rangeDateForm) }}
+        <div id="map" style="height:500px"></div>
     </div>
 </div>
 <br />
