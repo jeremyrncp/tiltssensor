@@ -74,7 +74,7 @@ class ApiController extends AbstractController
            foreach ($movementsData as $movementsDatum) {
                $floor = $movementsDatum["floor"];
 
-               if (array_key_exists("data", $movementsDatum)) {
+               if (array_key_exists("data", $movementsDatum) and is_array($movementsDatum["data"])) {
                   foreach ($movementsDatum["data"] as $date => $movements) {
                       $csvOuput .= $inventory . ";" . $floor . ";" . $date . ";" . $movements . PHP_EOL;
                   }
