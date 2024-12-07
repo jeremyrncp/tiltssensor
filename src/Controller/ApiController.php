@@ -74,8 +74,10 @@ class ApiController extends AbstractController
            foreach ($movementsData as $movementsDatum) {
                $floor = $movementsDatum["floor"];
 
-               foreach ($movementsDatum["data"] as $date => $movements) {
-                   $csvOuput .= $inventory . ";" . $floor . ";" . $date . ";" . $movements . PHP_EOL;
+               if (array_key_exists("data", $movementsDatum)) {
+                  foreach ($movementsDatum["data"] as $date => $movements) {
+                      $csvOuput .= $inventory . ";" . $floor . ";" . $date . ";" . $movements . PHP_EOL;
+                  }
                }
            }
         }
