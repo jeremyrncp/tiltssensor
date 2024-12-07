@@ -28,10 +28,11 @@
                     </p>
                 {% endfor %}
             </div>
-            <br />
-            <h3>Add note</h3>
-            {{ form(noteForm) }}
-
+            {% if is_granted('ROLE_SUPER_ADMIN') == false %}
+                <br />
+                <h3>Add note</h3>
+                {{ form(noteForm) }}
+            {% endif %}
         </div>
     </div>
     <div class="col-4">

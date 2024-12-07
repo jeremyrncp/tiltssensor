@@ -31,14 +31,14 @@ class DashboardUnitaryLiftController extends AbstractController
         }
 
         $note = new Note();
-        $note->setLift($lift)
-            ->setOwner($user)
-            ->setCreatedAt(new \DateTime());
 
         $noteForm = $this->createForm(NoteType::class, $note);
         $noteForm->handleRequest($request);
 
         if ($noteForm->isSubmitted() && $noteForm->isValid()) {
+            $note->setLift($lift)
+                ->setOwner($user)
+                ->setCreatedAt(new \DateTime());
             $lift->addNote($note);
             $entityManager->flush();
         }
