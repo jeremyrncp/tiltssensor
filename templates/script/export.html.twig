@@ -1,0 +1,28 @@
+<script type="text/javascript">
+var exportItems = [];
+
+const handleExport = (id) => {
+  const index = exportItems.indexOf(id);
+  if (index > -1) {
+    exportItems.splice(index, 1);
+  } else {
+    exportItems.push(id);
+  }
+
+  if (exportItems.length === 0) {
+    document.querySelector("#exportButton").className = "btn btn-secondary d-none";
+  } else {
+    document.querySelector("#exportButton").className = "btn btn-secondary";
+  }
+
+  document.querySelector("#exportButton").href = constructLink(exportItems);
+};
+
+const constructLink = (exportItems) => {
+
+  const start = document.querySelector("#range_date_lift_start").value;
+  const end = document.querySelector("#range_date_lift_end").value;
+
+  return "/api/export/movements?lifts=" + exportItems + "&start=" + start + "&end=" + end;
+}
+</script>

@@ -3,11 +3,16 @@
 namespace App\Controller;
 
 use App\Entity\ApiCredentials;
+use App\Entity\Lift;
 use App\Entity\Sensor;
 use App\Entity\SensorData;
+use App\Entity\User;
+use App\Service\LiftService;
 use App\Service\LoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -16,12 +21,91 @@ use Symfony\Component\Routing\Attribute\Route;
 #[Route('/api')]
 class ApiController extends AbstractController
 {
-    public function __construct(private readonly EntityManagerInterface $entityManager, private readonly LoggerService $loggerService)
+    public function __construct(
+        private readonly EntityManagerInterface $entityManager,
+        private readonly LoggerService $loggerService,
+        private readonly LiftService $liftService,
+        private readonly Security $security
+    )
     {
     }
 
+    #[Route('/export/movements', name: 'app_api_export_movement', methods: ['GET'])]
+    public function exportMouvement(Request $request): BinaryFileResponse
+    {
+        $idsLift = $request->query->get('lifts');
+        $explodeIdLift = explode(',', $idsLift);
+        $liftsMovementsData = [];
+
+        $dateStart = new \DateTime($request->query->get('start'));
+        $dateEnd = new \DateTime($request->query->get('end'));
+
+        $liftRepository = $this->entityManager->getRepository(Lift::class);
+
+        foreach ($explodeIdLift as $idLift) {
+            $lift = $liftRepository->find($idLift);
+
+            if ($lift instanceof Lift) {
+                /** @var User $user */
+                $user = $this->getUser();
+                if ($this->security->isGranted("ROLE_SUPER_ADMIN") OR $user->getOrganization() === $lift->getOrganization()) {
+                    $liftData = $this->liftService->getLiftData([$lift], $dateStart, $dateEnd);
+                    $liftsMovementsData[$lift->getInventory()] = $this->getMouvementDataInLIftData(reset($liftData));
+                }
+            }
+        }
+
+        $CSV = "Inventory lift;Floor;Date;Movements". PHP_EOL;
+        $CSV .= $this->makeCSVDataLine($liftsMovementsData);
+
+        $fileName = md5(time()).".csv";
+
+        file_put_contents(__DIR__ . '/../../public/export/'. $fileName, $CSV);
+
+        return new BinaryFileResponse(__DIR__ . '/../../public/export/'. $fileName);
+    }
+
+
+    private function makeCSVDataLine(array $liftsMovementsData)
+    {
+        $csvOuput = "";
+
+        foreach ($liftsMovementsData as $inventory => $movementsData) {
+           foreach ($movementsData as $movementsDatum) {
+               $floor = $movementsDatum["floor"];
+
+               foreach ($movementsDatum["data"] as $date => $movements) {
+                   $csvOuput .= $inventory . ";" . $floor . ";" . $date . ";" . $movements . PHP_EOL;
+               }
+           }
+        }
+
+        return $csvOuput;
+    }
+
+    private function  getMouvementDataInLIftData(array $liftDatas)
+    {
+        $mouvementsData = [];
+
+        if (array_key_exists("multipleSensor", $liftDatas)) {
+            foreach ($liftDatas["multipleSensor"]->floorDatas as $floorData) {
+                $mouvementsData[] =  [
+                    "floor" => $floorData["floor"],
+                    "data" => $floorData["mouvementsData"]
+                ];
+            }
+        } else {
+            $mouvementsData[] =  [
+                "floor" => $liftDatas["floor"],
+                "data" => $liftDatas["mouvementsData"]
+            ];
+        }
+
+        return $mouvementsData;
+    }
+
     #[Route('/callback', name: 'app_api_callback', methods: ['POST'])]
-    public function new(Request $request): Response
+    public function callback(Request $request): Response
     {
         $apiKey = $request->query->get('apiKey');
 

@@ -5,6 +5,7 @@
 {% block body %}
     {{ form(form) }}
     <br />
+    <div class="text-align-right"><a href="/api/" id="exportButton" target="_blank" class="btn btn-secondary d-none">Export movements</a></div><br />
     <table class="table table-bordered table-responsive table-hover">
         <thead>
         <tr class="text-center">
@@ -23,7 +24,7 @@
         <tbody>
         {% for lift in lifts %}
             <tr class="text-center">
-                <th><input type="checkbox" name="export" /></th>
+                <th><input type="checkbox" name="export" onclick="handleExport({{ lift.id }})" /></th>
                 <td>{{ lift.inventory }}</td>
                 <td>{{ lift.address }}</td>
                 <td>{{ lift.quartier }}</td>
@@ -89,4 +90,7 @@
         }
 
     </script>
+
+    {% include "script/export.html.twig" %}
+
 {% endblock %}
