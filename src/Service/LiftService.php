@@ -28,8 +28,7 @@ class LiftService
             } elseif ($lift->getSensors()->count() > 1) {
                 $extractedMultipleSensorVO = $this->extractDataWithMultipleSensor($lift->getSensors(), $start, $end);
                 $extractedMultipleSensorVO->extractStatusAndFloor();
-
-                return [
+                $liftsData[] = [
                     "id" => $lift->getId(),
                     "lift" => $lift,
                     "inventory" => $lift->getInventory(),
