@@ -7,6 +7,7 @@ use App\Entity\Sensor;
 use App\Entity\SensorData;
 use App\VO\ExtractedMultipleSensorVO;
 use App\VO\ExtractedOneSensorVO;
+use App\VO\SensorDataVO;
 use Doctrine\Common\Collections\Collection;
 
 class LiftService
@@ -42,6 +43,21 @@ class LiftService
                     "sensorDatas" => null,
                     "isMaintenance" => $lift->isMaintenance(),
                     "multipleSensor" => $extractedMultipleSensorVO
+                ];
+            } else {
+                $liftsData[] = [
+                    "id" => $lift->getId(),
+                    "lift" => $lift,
+                    "inventory" => $lift->getInventory(),
+                    "address" => $lift->getAddress(),
+                    "latitude" => $lift->getLatitude(),
+                    "longitude" => $lift->getLongitude(),
+                    "quartier" => $lift->getQuartier(),
+                    "status" => SensorDataVO::STATE_UNDEFINED,
+                    "movements" => 0,
+                    "floor" => 0,
+                    "sensorDatas" => null,
+                    "isMaintenance" => $lift->isMaintenance()
                 ];
             }
         }
