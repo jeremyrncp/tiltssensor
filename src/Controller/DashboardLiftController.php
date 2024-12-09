@@ -31,7 +31,7 @@ class DashboardLiftController extends AbstractController
         }
 
         $rangeDateVO = new RangeDateVO();
-        $rangeDateVO->start = (new \DateTime())->modify("-15 days");
+        $rangeDateVO->start = (new \DateTime())->modify("-7 days");
         $rangeDateVO->end = (new \DateTime("now"));
 
         $form = $this->createForm(RangeDateLiftType::class, $rangeDateVO);
