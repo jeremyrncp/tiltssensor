@@ -26,7 +26,7 @@ class DashboardLiftController extends AbstractController
     #[Route('/dashboard/lift', name: 'app_dashboard_lift')]
     public function index(Request $request): Response
     {
-        if (!$this->isGranted("ROLE_ADMIN") AND !$this->isGranted("ROLE_SUPERVISOR")) {
+        if (!$this->isGranted("ROLE_SUPER_ADMIN") AND !$this->isGranted("ROLE_ADMIN") AND !$this->isGranted("ROLE_SUPERVISOR")) {
             throw new AccessDeniedException("Access denied");
         }
 
