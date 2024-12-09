@@ -43,6 +43,33 @@
                 <div id="chartMovements{{ index }}"></div>
             {% endfor %}
         {% endif %}
+
+        <table class="table-responsive table-hover table-bordered">
+            <tr>
+                <th>Floor</th>
+                <th>Date</th>
+                <th>Movements</th>
+            </tr>
+        {% if liftData.multipleSensor is not defined %}
+                {% for date, mouvement in liftData.mouvementsData %}
+                    <tr>
+                        <td>0</td>
+                        <td>{{ date }}</td>
+                        <td>{{ mouvement }}</td>
+                    </tr>
+                {% endfor %}
+        {% else %}
+            {% for index,data in liftData.multipleSensor.floorDatas %}
+                {% for date, mouvement in data.mouvementsData %}
+                    <tr>
+                        <td>{{ index }}</td>
+                        <td>{{ date }}</td>
+                        <td>{{ mouvement }}</td>
+                    </tr>
+                {% endfor %}
+            {% endfor %}
+        {% endif %}
+        </table>
     </div>
     <div class="col-3">
         {{ form(rangeDateForm) }}
@@ -69,7 +96,7 @@
       ],
 
       // Series: Defines which chart type and data to use
-      series: [{ type: "area", xKey: "date", yKey: "movement" }],
+      series: [{ type: "bar", xKey: "date", yKey: "movement" }],
     };
 
     AgCharts.create(movements);
@@ -88,7 +115,7 @@
               ],
 
               // Series: Defines which chart type and data to use
-              series: [{ type: "area", xKey: "date", yKey: "movement" }],
+              series: [{ type: "bar", xKey: "date", yKey: "movement" }],
             };
 
             AgCharts.create(movements{{ index }} );
