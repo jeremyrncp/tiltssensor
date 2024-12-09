@@ -12,7 +12,6 @@ use App\Service\LoggerService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -31,7 +30,7 @@ class ApiController extends AbstractController
     }
 
     #[Route('/export/movements', name: 'app_api_export_movement', methods: ['GET'])]
-    public function exportMouvement(Request $request): BinaryFileResponse
+    public function exportMouvement(Request $request): Response
     {
         $idsLift = $request->query->get('lifts');
         $explodeIdLift = explode(',', $idsLift);
@@ -62,7 +61,11 @@ class ApiController extends AbstractController
 
         file_put_contents(__DIR__ . '/../../public/export/'. $fileName, $CSV);
 
-        return new BinaryFileResponse(__DIR__ . '/../../public/export/'. $fileName);
+        $response = new Response($CSV);
+        $response->headers->set('Content-Encoding', 'UTF-8');
+        $response->headers->set('Content-Type', 'text/csv; charset=UTF-8');
+        $response->headers->set('Content-Disposition', 'attachment; filename=export_lift.csv');
+        return $response;
     }
 
 
