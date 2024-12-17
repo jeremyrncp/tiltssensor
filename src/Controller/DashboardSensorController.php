@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Lift;
 use App\Entity\Sensor;
-use App\Entity\SensorData;
 use App\Service\SensorDataService;
 use App\VO\LifetimeSensorDataVO;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -32,6 +31,7 @@ class DashboardSensorController extends AbstractController
 
         return $this->render('dashboard_sensor/index.html.twig', [
             'sensorDatas' => $lifetimesSensorData,
+            'lift' => $lift
         ]);
     }
 }
