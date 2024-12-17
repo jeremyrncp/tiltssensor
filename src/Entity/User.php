@@ -51,6 +51,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'users')]
     private ?Organization $organization = null;
 
+    #[ORM\Column(length: 2, nullable: true)]
+    private ?string $locale = null;
+
     public function __construct()
     {
         $this->lifts = new ArrayCollection();
@@ -212,5 +215,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function __toString(): string
     {
         return $this->firstname . " " . $this->lastname;
+    }
+
+    public function getLocale(): ?string
+    {
+        return $this->locale;
+    }
+
+    public function setLocale(?string $locale): static
+    {
+        $this->locale = $locale;
+
+        return $this;
     }
 }

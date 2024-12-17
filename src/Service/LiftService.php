@@ -108,7 +108,11 @@ class LiftService
 
         $endSensorData = end($extractedOneSensorVO->sensorDatas);
 
-        $extractedOneSensorVO->state = $extractedOneSensorVO->getStateWithEndSensorData($endSensorData);
+        if ($endSensorData instanceof SensorData) {
+            $extractedOneSensorVO->state = $extractedOneSensorVO->getStateWithEndSensorData($endSensorData);
+        } else {
+            $extractedOneSensorVO->state = ExtractedOneSensorVO::STATE_UNDEFINED;
+        }
 
         return $extractedOneSensorVO;
     }

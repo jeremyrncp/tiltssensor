@@ -34,6 +34,13 @@ class UserType extends AbstractType
                 ]
             ])
             ->add('password', TextType::class)
+            ->add('locale', ChoiceType::class, [
+                'choices'  => [
+                    'English' => 'en',
+                    'Lituanian' => 'lt',
+                    'Deutsh' => 'de'
+                ]
+            ])
         ;
 
         $builder->get('roles')

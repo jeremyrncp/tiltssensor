@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Lift {{ lift.inventory }} {% endblock %}
+{% block title %}{{ "lift.title"|trans }} {{ lift.inventory }} {% endblock %}
 
 {% block body %}
 <br />
@@ -8,18 +8,18 @@
 <div class="row mt-4">
     <div class="col-3">
         <div class="alert alert-warning">
-            <b>Inventory</b> : {{ lift.inventory }}<br />
-            <b>Address</b> : {{ lift.address }} <b>Quartier</b> : {{ lift.quartier }}<br />
-            <b>Number floor</b> : {{ lift.floor }}<br />
-            <b>Status</b> : {{ liftData.status }}<br />
-            <b>Movements</b> : {{ liftData.movements }}<br />
-            <b>Note</b> : {{ lift.note }}<br />
-            <b>Name contact</b> : {{ lift.nameContact }} <b>Phone contact</b> : {{ lift.phoneContact }}<br />
-            <b>Maintener</b> : {{ lift.maintener }}<br />
-            <b>Maintenance</b> : {{ liftData.isMaintenance == true ? 'yes' : 'no' }}<br />
+            <b>{{ "lift.inventory"|trans }}</b> : {{ lift.inventory }}<br />
+            <b>{{ "lift.address"|trans }}</b> : {{ lift.address }} <b>{{ "lift.quartier"|trans }}</b> : {{ lift.quartier }}<br />
+            <b>{{ "lift.number.floor"|trans }}</b> : {{ lift.floor }}<br />
+            <b>{{ "lift.status"|trans }}</b> : {{ liftData.status }}<br />
+            <b>{{ "lift.movements"|trans }}</b> : {{ liftData.movements }}<br />
+            <b>{{ "lift.note"|trans }}</b> : {{ lift.note }}<br />
+            <b>{{ "lift.name.contact"|trans }}</b> : {{ lift.nameContact }} <b>{{ "lift.phone.contact"|trans }}</b> : {{ lift.phoneContact }}<br />
+            <b>{{ "lift.maintener"|trans }}</b> : {{ lift.maintener }}<br />
+            <b>{{ "lift.maintenance"|trans }}</b> : {{ liftData.isMaintenance == true ? 'yes' : 'no' }}<br />
         </div>
         <div class="alert alert-info">
-            <h3>Discussions</h3><br />
+            <h3>{{ "lift.discussions"|trans }}</h3><br />
             <div style="height:300px; overflow-y: scroll;">
                 {% for note in lift.notes %}
                     <p class="mb-2">
@@ -30,7 +30,7 @@
             </div>
             {% if is_granted('ROLE_SUPER_ADMIN') == false %}
                 <br />
-                <h3>Add note</h3>
+                <h3>{{ "lift.add.note"|trans }}</h3>
                 {{ form(noteForm) }}
             {% endif %}
         </div>
@@ -46,9 +46,9 @@
 
         <table class="table table-responsive table-hover table-bordered">
             <tr>
-                <th>Floor</th>
-                <th>Date</th>
-                <th>Movements</th>
+                <th>{{ "lift.floor"|trans }}</th>
+                <th>{{ "lift.date"|trans }}</th>
+                <th>{{ "lift.movements"|trans }}</th>
             </tr>
         {% if liftData.multipleSensor is not defined %}
                 {% for date, mouvement in liftData.mouvementsData %}
@@ -77,7 +77,7 @@
     </div>
 </div>
 <br />
-    <a href="{{ path("app_dashboard_lift") }}"><< back to index</a>
+    <a href="{{ path("app_dashboard_lift") }}">{{ "back.to.index"|trans }}</a>
 <br />
 <script type="text/javascript">
     const { AgCharts } = agCharts;
@@ -87,7 +87,7 @@
     const movements = {
       container: document.getElementById("chartMovements"),
       title: {
-        text: "Movements",
+        text: "{{ "lift.movements"|trans }}",
       },
       data: [
           {% for date, mouvement in liftData.mouvementsData %}
@@ -106,7 +106,7 @@
             const movements{{ index }} = {
               container: document.getElementById("chartMovements{{ index }}"),
               title: {
-                text: "Movements (floor {{ index }})",
+                text: "{{ "lift.movements"|trans }} ({{ "lift.floor"|trans }} {{ index }})",
               },
               data: [
                   {% for date, mouvement in data.mouvementsData %}

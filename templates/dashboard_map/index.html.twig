@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello DashboardMapController!{% endblock %}
+{% block title %}{{ "dashboard.map"|trans }}{% endblock %}
 
 {% block body %}
     <div id="map" style="width: 100%; height: 800px;"></div>
@@ -14,7 +14,7 @@
 
     {% for index, lift in lifts %}
         var marker{{ index }} = L.marker([{{ lift.latitude }}, {{ lift.longitude }}]).addTo(map);
-        marker{{ index }}.bindPopup('<b>{{ lift.inventory }}</b><br /><a href="{{ path('app_dashboard_unitary_lift', {'id': lift.id}) }}"git s>show dashbpard</a>')
+        marker{{ index }}.bindPopup('<b>{{ lift.inventory }}</b><br /><a href="{{ path('app_dashboard_unitary_lift', {'id': lift.id}) }}">{{ "map.show.dashboard"|trans }}</a>')
     {% endfor %}
 
     </script>

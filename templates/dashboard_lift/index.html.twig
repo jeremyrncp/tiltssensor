@@ -1,24 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Dashboard lift{% endblock %}
+{% block title %}{{ "lift.title"|trans }}{% endblock %}
 
 {% block body %}
     {{ form(form) }}
     <br />
-    <div class="text-align-right"><a href="/api/" id="exportButton" target="_blank" class="btn btn-secondary d-none">Export movements</a></div><br />
+    <div class="text-align-right"><a href="/api/" id="exportButton" target="_blank" class="btn btn-secondary d-none">{{ "lift.export.movement"|trans }}</a></div><br />
     <table class="table table-bordered table-responsive table-hover">
         <thead>
         <tr class="text-center">
             <th>&nbsp;</th>
-            <th>Inventory</th>
-            <th>Address</th>
-            <th>Quartier</th>
-            <th>Status</th>
-            <th>Movements</th>
-            <th>Floor</th>
-            <th>Localisation</th>
-            <th>Maintenance</th>
-            <th>actions</th>
+            <th>{{ "lift.inventory"|trans }}</th>
+            <th>{{ "lift.address"|trans }}</th>
+            <th>{{ "lift.quartier"|trans }}</th>
+            <th>{{ "lift.status"|trans }}</th>
+            <th>{{ "lift.movements"|trans }}</th>
+            <th>{{ "lift.floor"|trans }}</th>
+            <th>{{ "lift.localisation"|trans }}</th>
+            <th>{{ "lift.maintenance"|trans }}</th>
+            <th>{{ "lift.actions"|trans }}</th>
         </tr>
         </thead>
         <tbody>
@@ -32,14 +32,14 @@
                 <td>{{ lift.movements }}</td>
                 <td>{{ lift.floor }}</td>
                 <td><i style="cursor:pointer;" class="fa-solid fa-map" onclick="showMap({{ lift.latitude }}, {{ lift.longitude }})"></i></td>
-                <td><input type="checkbox" {{ lift.isMaintenance ? 'checked' : '' }} /></td>
+                <td><input disabled type="checkbox" {{ lift.isMaintenance ? 'checked' : '' }} /></td>
                 <td>
-                    <a href="{{ path('app_dashboard_unitary_lift', {'id': lift.id}) }}">show</a>
+                    <a href="{{ path('app_dashboard_unitary_lift', {'id': lift.id}) }}">{{ "lift.show"|trans }}</a>
                 </td>
             </tr>
         {% else %}
             <tr>
-                <td colspan="9">no records found</td>
+                <td colspan="9">{{ "no.records.found"|trans }}</td>
             </tr>
         {% endfor %}
         </tbody>
