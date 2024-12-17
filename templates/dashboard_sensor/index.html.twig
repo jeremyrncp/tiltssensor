@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ "sensor.title"|trans }}{% endblock %}
+
+{% block body %}
+    <table class="table table-bordered table-responsive">
+        <thead>
+            <th>{{ "sensor.name"|trans }}</th>
+            <th>{{ "sensor.identifier"|trans }}</th>
+            <th>{{ "sensor.floor"|trans }}</th>
+            <th>{{ "sensor.status"|trans }}</th>
+            <th>{{ "sensor.last.date"|trans }}</th>
+        </thead>
+        <tbody>
+            {% for sensorData in sensorDatas %}
+                <tr>
+                    <td>{{ sensorData.sensor.name }}</td>
+                    <td>{{ sensorData.sensor.identifier }}</td>
+                    <td>{{ sensorData.sensor.floor }}</td>
+                    <td>{{ sensorData.status }}</td>
+                    <td>{{ sensorData.lastTimestamp|date('Y-m-d H:i:s') }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

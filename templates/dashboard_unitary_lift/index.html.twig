@@ -17,6 +17,8 @@
             <b>{{ "lift.name.contact"|trans }}</b> : {{ lift.nameContact }} <b>{{ "lift.phone.contact"|trans }}</b> : {{ lift.phoneContact }}<br />
             <b>{{ "lift.maintener"|trans }}</b> : {{ lift.maintener }}<br />
             <b>{{ "lift.maintenance"|trans }}</b> : {{ liftData.isMaintenance == true ? 'yes' : 'no' }}<br />
+            <br />
+            <a href="{{ path('app_dashboard_lift_sensors', {'lift': lift.id}) }}">{{ "sensor.title"|trans }}</a>
         </div>
         <div class="alert alert-info">
             <h3>{{ "lift.discussions"|trans }}</h3><br />

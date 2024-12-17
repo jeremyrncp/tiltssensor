@@ -12,6 +12,10 @@ class SensorDataVO
 
     public const STATE_UNDEFINED = "STATE_UNDEFINED";
 
+    public const STATE_ONLINE = "STATE_ONLINE";
+    public const STATE_OFFLINE = "STATE_OFFLINE";
+
+
     public function getStateWithEndSensorData(SensorData $sensorData)
     {
         if ($sensorData->getSensorPosition() === "opened" && $sensorData->getTimeSinceLastChange() >= 9000) {
