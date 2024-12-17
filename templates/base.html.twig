@@ -33,7 +33,8 @@
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
                             'app_dashboard_lift',
-                            'app_dashboard_unitary_lift'
+                            'app_dashboard_unitary_lift',
+                            'app_dashboard_lift_sensors'
                         ] %} active {% endif %}" href="{{ path('app_dashboard_lift') }}">{{ "lift.title"|trans }}</a>
                     </li>
                 {% endif %}
