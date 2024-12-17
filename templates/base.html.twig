@@ -34,14 +34,14 @@
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
                             'app_dashboard_lift',
                             'app_dashboard_unitary_lift'
-                        ] %} active {% endif %}" href="{{ path('app_dashboard_lift') }}">Dashboard lift</a>
+                        ] %} active {% endif %}" href="{{ path('app_dashboard_lift') }}">{{ "lift.title"|trans }}</a>
                     </li>
                 {% endif %}
                 {% if is_granted("ROLE_ADMIN") or is_granted("ROLE_SUPERVISOR") %}
                     <li class="nav-item">
                         <a class="nav-link {% if app.request.attributes.get('_route') in [
                             'app_dashboard_map'
-                        ] %} active {% endif %}" href="{{ path('app_dashboard_map') }}">Dashboard map</a>
+                        ] %} active {% endif %}" href="{{ path('app_dashboard_map') }}">{{ "map.title"|trans }}</a>
                     </li>
                 {% endif %}
                 {% if is_granted("ROLE_SUPER_ADMIN") %}
